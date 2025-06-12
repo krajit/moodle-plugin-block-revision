@@ -21,12 +21,19 @@
  * @copyright   2025 Ajit Kunar <ajitkumar22@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+use block_revision\output;
+
+
 class block_revision extends block_base {
 
     /**
      * Initializes class member variables.
      */
     public function init() {
+        global $CFG;
+
+        require_once($CFG->dirroot . '/comment/lib.php');
         // Needed by Moodle to differentiate between blocks.
         $this->title = get_string('pluginname', 'block_revision');
     }
@@ -37,6 +44,9 @@ class block_revision extends block_base {
      * @return stdClass The block contents.
      */
     public function get_content() {
+        global $CFG;
+        $output = $this->page->get_renderer('block_revision');
+        $html = $output->render_learning_tracking_form();
 
         if ($this->content !== null) {
             return $this->content;
@@ -58,6 +68,10 @@ class block_revision extends block_base {
             $text = 'Please define the content text in /blocks/revision/block_revision.php.';
             $this->content->text = $text;
         }
+
+        //$html = "Hello blocks";
+
+        $this->content->text = $html;
 
         return $this->content;
     }
