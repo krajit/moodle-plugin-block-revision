@@ -1,7 +1,6 @@
 <div class="container">
     <h4 class="mb-3">Learning Tracker</h4>
 
-    <!-- Learning Level -->
     <div class="mb-3">
         <label class="form-label d-block">Learning Level</label>
         <div class="btn-group btn-toggle-group" role="group">
@@ -16,13 +15,11 @@
         </div>
     </div>
 
-    <!-- Revision Count -->
     <div class="mb-3">
         <label for="revisionCount" class="form-label">Number of Times Revised</label>
         <input type="number" class="form-control" id="revisionCount" min="0" value="{{revisioncount}}">
     </div>
 
-    <!-- Next Review Date -->
     <div class="mb-3">
         <label for="nextReview" class="form-label">Suggested Next Review Date</label>
         <input type="date" class="form-control" id="nextReview" value="{{nextreview}}">
@@ -35,62 +32,49 @@
         color: #000;
         border-color: #ccc;
     }
-
-    .btn-check:checked + .btn-fresh {
-        background-color: #dc3545;
-        color: #fff;
-    }
-
-    .btn-check:checked + .btn-learning {
-        background-color: #ffc107;
-        color: #000;
-    }
-
-    .btn-check:checked + .btn-learned {
-        background-color: #28a745;
-        color: #fff;
-    }
+    .btn-check:checked + .btn-fresh { background-color: #dc3545; color: #fff; }
+    .btn-check:checked + .btn-learning { background-color: #ffc107; color: #000; }
+    .btn-check:checked + .btn-learned { background-color: #28a745; color: #fff; }
 </style>
 
-<script>
+{{#js}}
 require(['jquery'], function($) {
     $(function() {
-        // Learning Level button clicks
+        alert('Script loaded');
+        const pageurl = window.location.pathname + window.location.search;
+
         $('.btn-toggle-group label').on('click', function() {
             const level = $(this).data('value');
-            $.ajax({
-                url: M.cfg.wwwroot + '/blocks/revision/ajax.php',
-                method: 'POST',
-                data: {
-                    sesskey: M.cfg.sesskey,
-                    action: 'update_learning_level',
-                    level: level,
-                    userid: {{userid}}  // or fetch from JS if not passed into template
-                }
+            $.post(M.cfg.wwwroot + '/blocks/revision/ajax.php', {
+                sesskey: M.cfg.sesskey,
+                action: 'update_learning_level',
+                level: level,
+                userid: {{userid}},
+                pageurl: pageurl
             });
         });
 
-        // Revision Count input change
         $('#revisionCount').on('change', function() {
             const revision = $(this).val();
             $.post(M.cfg.wwwroot + '/blocks/revision/ajax.php', {
                 sesskey: M.cfg.sesskey,
                 action: 'update_revision',
                 revision: revision,
-                userid: {{userid}}
+                userid: {{userid}},
+                pageurl: pageurl
             });
         });
 
-        // Next Review Date change
         $('#nextReview').on('change', function() {
             const date = $(this).val();
             $.post(M.cfg.wwwroot + '/blocks/revision/ajax.php', {
                 sesskey: M.cfg.sesskey,
                 action: 'update_review_date',
                 nextreview: date,
-                userid: {{userid}}
+                userid: {{userid}},
+                pageurl: pageurl
             });
         });
     });
 });
-</script>
+{{/js}}
