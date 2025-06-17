@@ -34,7 +34,7 @@ class get_entry extends external_api {
         return [
             'learninglevel' => $record->learninglevel,
             'revisioncount' => (int)$record->revisioncount,
-            'nextreview' => $record->nextreview
+            'nextreview' => date('Y-m-d', $record->nextreview)
         ];
     }
 
