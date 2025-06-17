@@ -38,6 +38,16 @@ class block_revision extends block_base {
      */
     public function get_content() {
 
+         global $DB, $USER, $COURSE, $PAGE, $CGF, $OUTPUT;
+
+        //$pageurl = $PAGE->url->out();
+
+        $pageurl = $PAGE->url->get_path(true);  // true = leading slash
+        if ($PAGE->url->get_query_string()) {
+            $pageurl .= '?' . $PAGE->url->get_query_string();
+        }
+
+
         if ($this->content !== null) {
             return $this->content;
         }
@@ -55,7 +65,7 @@ class block_revision extends block_base {
         if (!empty($this->config->text)) {
             $this->content->text = $this->config->text;
         } else {
-            $text = 'Please define the content text in /blocks/revision/block_revision.php.';
+            $text = $OUTPUT->render_from_template('block_revision/learningtracker',[]);
             $this->content->text = $text;
         }
 
