@@ -26,3 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Revision Manager';
+$string['viewrevisiondata'] = 'Revision Manager Table';

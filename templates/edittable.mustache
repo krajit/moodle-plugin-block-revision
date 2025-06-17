@@ -1,0 +1,22 @@
+<table class="table table-striped" id="revisionTable">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Page URL</th>
+            <th>Learning Level</th>
+            <th>Revision Count</th>
+            <th>Next Review</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#entries}}
+        <tr data-id="{{id}}">
+            <td>{{fullname}}</td>
+            <td>{{pageurl}}</td>
+            <td contenteditable="true" class="editable" data-field="learninglevel">{{learninglevel}}</td>
+            <td contenteditable="true" class="editable" data-field="revisioncount">{{revisioncount}}</td>
+            <td contenteditable="true" class="editable" data-field="nextreview">{{nextreview}}</td>
+        </tr>
+        {{/entries}}
+    </tbody>
+</table>

@@ -98,4 +98,48 @@ class block_revision extends block_base {
             '' => true,
         ];
     }
+
+//    public function extend_navigation_course($navigation, $course, $context) {
+//         $url = new moodle_url('/blocks/revision/view.php', ['courseid' => $course->id]);
+//         $navigation->add(
+//             get_string('viewrevisiondata', 'block_revision'),
+//             $url,
+//             navigation_node::TYPE_CUSTOM,
+//             null,
+//             null,
+//             new pix_icon('i/report', '')
+//         );
+//     }
+
+public function extend_navigation_course($navigation, $course, $context) {
+    debugging('extend_navigation_course() called', DEBUG_DEVELOPER);
+    global $PAGE;
+
+    if (!has_capability('moodle/block:view', $context)) {
+        return;
+    }
+
+    // Only show if inside a course page.
+    if ($PAGE->context->contextlevel !== CONTEXT_COURSE) {
+        return;
+    }
+
+    // Find the "courseadmin" node – the main parent of the "More" menu.
+    if ($coursenode = $navigation->find('courseadmin', navigation_node::TYPE_COURSE)) {
+
+        $url = new moodle_url('/blocks/revision/view.php', ['courseid' => $course->id]);
+
+        $coursenode->add(
+            get_string('viewrevisiondata', 'block_revision'),
+            $url,
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'blockrevisionlink',
+            new pix_icon('i/report', '')
+        );
+    }
+}
+
+
+
 }
