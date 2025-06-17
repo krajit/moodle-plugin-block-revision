@@ -69,6 +69,7 @@ class block_revision extends block_base {
             $this->content->text = $text;
         }
 
+        $PAGE->requires->js_call_amd('block_revision/init', 'init');
         return $this->content;
     }
 
