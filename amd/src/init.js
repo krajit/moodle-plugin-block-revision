@@ -3,7 +3,6 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
         init: function() {
 
             function saveData() {
-                window.console.log("hello");
                 const selectedRadio = $('input[name="learningLevel"]:checked');
                 const selectedLevel = selectedRadio.length ? selectedRadio.next('label').data('value') : '';
                 const count = $('#revisionCount').val();
@@ -30,6 +29,27 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 }]);
             }
 
+            function loadExistingData() {
+                const pageurl = window.location.pathname + window.location.search;
+
+                Ajax.call([{
+                    methodname: 'block_revision_get_entry',
+                    args: { pageurl: pageurl },
+                    done: function(data) {
+                        if (data.learninglevel) {
+                            $(`label[data-value="${data.learninglevel}"]`).prev('input').prop('checked', true);
+                        }
+                        if (data.revisioncount !== null) {
+                            $('#revisionCount').val(data.revisioncount);
+                        }
+                        if (data.nextreview) {
+                            $('#nextReview').val(data.nextreview);
+                        }
+                    },
+                    fail: Notification.exception
+                }]);
+            }
+
             // Attach listeners for autosave
             $('#revisionCount, #nextReview').on('input change', saveData);
             $('input[name="learningLevel"]').on('change', saveData);
@@ -37,6 +57,8 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
 
             // Optional: initial save if you want to auto-save prepopulated data
             // saveData();
+
+             loadExistingData(); // Fetch saved data on page load
         }
     };
 });
