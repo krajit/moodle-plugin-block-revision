@@ -21,6 +21,8 @@
  * @copyright   2025 Your Name <you@example.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+
 class block_revision extends block_base {
 
     /**
@@ -60,7 +62,15 @@ class block_revision extends block_base {
         $this->content = new stdClass();
         $this->content->items = [];
         $this->content->icons = [];
-        $this->content->footer = '';
+#        $this->content->footer = '';
+
+      
+        // Add a footer gear icon linking to course plugin page.
+        $url = new moodle_url('/blocks/revision/view.php', ['courseid' => $COURSE->id]);
+
+        $gearicon = $OUTPUT->pix_icon('i/settings', get_string('settings'));
+        $this->content->footer = html_writer::link($url, $gearicon, ['class' => 'float-right']);
+
 
         if (!empty($this->config->text)) {
             $this->content->text = $this->config->text;
@@ -99,46 +109,7 @@ class block_revision extends block_base {
         ];
     }
 
-//    public function extend_navigation_course($navigation, $course, $context) {
-//         $url = new moodle_url('/blocks/revision/view.php', ['courseid' => $course->id]);
-//         $navigation->add(
-//             get_string('viewrevisiondata', 'block_revision'),
-//             $url,
-//             navigation_node::TYPE_CUSTOM,
-//             null,
-//             null,
-//             new pix_icon('i/report', '')
-//         );
-//     }
 
-public function extend_navigation_course($navigation, $course, $context) {
-    debugging('extend_navigation_course() called', DEBUG_DEVELOPER);
-    global $PAGE;
-
-    if (!has_capability('moodle/block:view', $context)) {
-        return;
-    }
-
-    // Only show if inside a course page.
-    if ($PAGE->context->contextlevel !== CONTEXT_COURSE) {
-        return;
-    }
-
-    // Find the "courseadmin" node – the main parent of the "More" menu.
-    if ($coursenode = $navigation->find('courseadmin', navigation_node::TYPE_COURSE)) {
-
-        $url = new moodle_url('/blocks/revision/view.php', ['courseid' => $course->id]);
-
-        $coursenode->add(
-            get_string('viewrevisiondata', 'block_revision'),
-            $url,
-            navigation_node::TYPE_CUSTOM,
-            null,
-            'blockrevisionlink',
-            new pix_icon('i/report', '')
-        );
-    }
-}
 
 
 

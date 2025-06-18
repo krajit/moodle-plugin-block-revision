@@ -26,7 +26,7 @@ class update_entry extends external_api {
             throw new \invalid_parameter_exception("Field not allowed.");
         }
 
-        $DB->set_field('block_revision_data', $field, $value, ['id' => $id]);
+        $DB->set_field('block_revision_entries', $field, $value, ['id' => $id]);
 
         return ['status' => 'success'];
     }

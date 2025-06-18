@@ -20,7 +20,7 @@ class get_all_entries extends external_api {
     public static function execute($courseid) {
         global $DB;
 
-        $records = $DB->get_records('block_revision_data', ['courseid' => $courseid]);
+        $records = $DB->get_records('block_revision_entries');//, ['courseid' => $courseid]);
         $users = [];
 
         foreach ($records as $r) {
